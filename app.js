@@ -1,9 +1,11 @@
 'use strict';
 
 const express = require('express');
+const cors = require('cors')
 
 const app = express();
 app.enable('trust proxy');
+app.use(cors());
 
 // Body parser
 
@@ -174,6 +176,21 @@ app.get('/api/getnearbyanimals', function (req, res) {
   query.get().then(value => {
     res.status(200)
       .json(value.docs)
+      .end();
+  });
+});
+
+// GET http://localhost:8080/api/getanimals
+
+app.get('/api/getanimals', function (req, res) {
+  regularAnimalGeoCollection.get().then(value => {
+    var responseArr = []
+    value.forEach(doc => {
+      responseArr.push(doc.data().d)
+    });
+
+    res.status(200)
+      .json(responseArr)
       .end();
   });
 });
