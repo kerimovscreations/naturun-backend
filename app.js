@@ -174,8 +174,14 @@ app.get('/api/getnearbyanimals', function (req, res) {
   });
 
   query.get().then(value => {
+
+    var responseArr = []
+    value.docs.forEach(doc => {
+      responseArr.push(doc.data())
+    });
+
     res.status(200)
-      .json(value.docs)
+      .json(responseArr)
       .end();
   });
 });
@@ -194,6 +200,22 @@ app.get('/api/getanimals', function (req, res) {
       .end();
   });
 });
+
+// GET http://localhost:8080/api/getdrivers
+
+app.get('/api/getdrivers', function (req, res) {
+  regularDriverGeoCollection.get().then(value => {
+    var responseArr = []
+    value.forEach(doc => {
+      responseArr.push(doc.data().d)
+    });
+
+    res.status(200)
+      .json(responseArr)
+      .end();
+  });
+});
+
 
 const PORT = process.env.PORT || 8080;
 app.listen(process.env.PORT || 8080, () => {
